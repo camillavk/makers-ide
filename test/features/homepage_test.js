@@ -30,9 +30,14 @@ describe('home page', function() {
     expect(browser.text('.files a:first-child')).to.eql('_test.txt');
   });
 
+  xit('should display the name of the second file it found', function() {
+    expect(browser.text('.files a:nth-child(2)')).to.eql('example.js')
+  });
+
   it('takes you to an edit page when a file is selected', function(){
     browser.clickLink('_test.txt', function(){
       expect(browser.location.pathname).to.eql('/edit?file=_test.txt');
     })
   });
+
 });

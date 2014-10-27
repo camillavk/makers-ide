@@ -1,20 +1,31 @@
 var app = require('express')();
+// express is an rspec style testing language
 var server = require('http').Server(app);
 var fs = require('fs');
 var io = require('socket.io')(server);
+// compiling the requests
 
 var bodyParser = require('body-parser');
+// place your template or code and put it into the body of your html response
 app.use(bodyParser.urlencoded({ extended: false }))
+// extended argument allows to choose between parsing the urlencoded data with the querystring library (when false)
 app.use(require('express-ejs-layouts'));
 app.use(require('express').static('public'));
+// templating for ejs (same as erb)
 
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response){
   fs.readdir('code', function(err, files) {
-    response.render('index', { files: files })
+    if (err) {
+      response.render('index', {  })
+    } else {
+      response.render('index', { files: files })
+    }
   })
 });
+// app.get(path, callback(request, response){change to response})
+// readdir -> read directory
 
 app.get('/edit', function(request, response){
   var fileName = request.query.file;
